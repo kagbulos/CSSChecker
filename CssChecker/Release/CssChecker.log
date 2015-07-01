@@ -1,1 +1,10 @@
-﻿  CssChecker.vcxproj -> c:\users\kendall\documents\visual studio 2010\Projects\CssChecker\Release\CssChecker.exe
+﻿  Checker Functions.cpp
+Checker Functions.cpp(11): warning C4018: '<' : signed/unsigned mismatch
+Checker Functions.cpp(257): warning C4018: '<' : signed/unsigned mismatch
+Checker Functions.cpp(283): warning C4018: '<' : signed/unsigned mismatch
+Checker Functions.cpp(355): warning C4018: '<' : signed/unsigned mismatch
+  CssChecker.cpp
+  Tests.cpp
+  Generating code
+  Finished generating code
+  CssChecker.vcxproj -> c:\users\kendall\documents\visual studio 2010\Projects\CssChecker\Release\CssChecker.exe
