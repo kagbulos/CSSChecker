@@ -5,7 +5,7 @@
 #include <set>
 using namespace std;
 
-//tells if the string has an upper case or not
+//tells if the string has an upper case character or not
 bool hasUpper (std::string input)
 {
 	for (int i = 0; i < input.length(); i++)
@@ -19,6 +19,7 @@ bool hasUpper (std::string input)
 	return false;
 }
 
+//tells if the string has a colon or not
 bool hasColon (std::string input)
 {
 	if (input.find(":") != std::string::npos)
@@ -29,6 +30,7 @@ bool hasColon (std::string input)
 		return false;
 }
 
+//checks that that there is a space before the curly and there is no empty space after
 bool curlyAndSpaceChecker(std::string input)
 {
 	if(input.length() < 3 || input[input.length()-1] != '{')
@@ -41,16 +43,12 @@ bool curlyAndSpaceChecker(std::string input)
 	}
 	else 
 		return false;
-
 }
 
+//checks if there is any empty space at the end of the string
 bool endsEmptySpace(std::string input)
 {
-	if (input.length() == 0)
-	{
-		return false;
-	}
-	if (input[input.length()-1] == ' ')
+	if (input.length() > 0 && input[input.length()-1] == ' ')
 	{
 		return true;
 	}
@@ -58,9 +56,10 @@ bool endsEmptySpace(std::string input)
 		return false;
 }
 
+//checks if the string starts with an empty space
 bool startsEmptySpace(std::string input)
 {
-	if (input[0] == ' ')
+	if (input.length() > 0 && input[0] == ' ')
 	{
 		return true;
 	}
@@ -71,10 +70,7 @@ bool startsEmptySpace(std::string input)
 //tells us if the line we are looking at is a selector
 bool hasSelector (std::string input)
 {
-	if (input.length() == 0)
-		return false;
-
-	if (input.find("{") != std::string::npos)
+	if (input.length() > 0 && input.find("{") != std::string::npos)
 	{
 		return true;
 	}
@@ -82,12 +78,10 @@ bool hasSelector (std::string input)
 		return false;
 }
 
-bool hasClosingSelector (std::string input) //tells you when you find a closing selector }
+//tells you when you find a closing selector }
+bool hasClosingSelector (std::string input)
 {
-	if (input.length() == 0)
-		return false;
-
-	if (input.find("}") != std::string::npos)
+	if (input.length() > 0 && input.find("}") != std::string::npos)
 	{
 		return true;
 	}
@@ -95,7 +89,8 @@ bool hasClosingSelector (std::string input) //tells you when you find a closing 
 		return false;
 }
 
-bool hasProperSelectorFormat(std::string input) //guaranteed it wont recieve a null input
+//checks the format of the opening selector (doesn't have a capital, doesn't start with a space, and has the correct format for a {)
+bool hasProperSelectorFormat(std::string input) 
 {
 	if (hasUpper(input) || startsEmptySpace(input))
 	{
@@ -110,7 +105,8 @@ bool hasProperSelectorFormat(std::string input) //guaranteed it wont recieve a n
 	return false;
 }
 
-bool hasProperClosingSelectorFormat(std::string input) //guaranteed it wont recieve a null input
+//checks the format of the closing selector || it shouldnt be more than }
+bool hasProperClosingSelectorFormat(std::string input)
 {
 	if (input.length() > 1)
 	{
@@ -120,33 +116,24 @@ bool hasProperClosingSelectorFormat(std::string input) //guaranteed it wont reci
 		return true;
 }
 
+//returns the property of the line (i.e. margin, background, etc.)
 string getProperty(std::string input)
 {
-	if (input.length() == 0)
-	{
-		return "";
-	}
-
 	size_t colonPosition = input.find(":");
-	if (colonPosition != std::string::npos) //return everything up to the :
+	if (input.length() > 0 && colonPosition != std::string::npos) //return everything up to the :
 	{
 		return input.substr(0, colonPosition);
 	}
 	else //couldn't find a : inside the line
 		return "";
 
-
 }
 
+//returns the property value of the line (i.e. #fff, 0.8, etc.)
 string getPropertyValue(std::string input)
 {
-	if (input.length() == 0)
-	{
-		return "";
-	}
-
 	size_t colonPosition = input.find(":");
-	if (colonPosition != std::string::npos) //return everything up to the :
+	if (input.length() > 0 && colonPosition != std::string::npos) //return everything up to the :
 	{
 		return input.substr(colonPosition+1);
 	}
@@ -154,14 +141,10 @@ string getPropertyValue(std::string input)
 		return "";
 }
 
+//checks the format of the line with a property and property value
 bool hasProperPropertyAndValueFormat(std::string input)
 {
-	if (input.length() == 0)
-	{
-		return false;
-	}
-
-	if (hasUpper(input))
+	if (input.length() == 0 || hasUpper(input))
 	{
 		return false;
 	}
@@ -169,10 +152,16 @@ bool hasProperPropertyAndValueFormat(std::string input)
 	return true;
 }
 
-int findIndentation(std::string input) //finds how many spaces there are in the line before the text
+//finds how many spaces there are in the line before the text
+int findIndentation(std::string input)
 {
 	int count = 0;
 	int i = 0;
+
+	if (input.length() == 0)
+	{
+		return 0;
+	}
 	
 	while(input[i] == ' ')
 	{
@@ -183,17 +172,13 @@ int findIndentation(std::string input) //finds how many spaces there are in the 
 	return count;
 }
 
-bool isConjunctionSelector(std::string input) //tells you if you have a conjunction of element names and Ids/classes
+//tells you if you have a conjunction of element names and Ids/classes
+bool isConjunctionSelector(std::string input) 
 {
-	if(input.length() == 0)
-	{
-		return false;
-	}
-
 	size_t foundPeriod = input.find('.');
 	size_t foundHash = input.find('#');
-	//return false true we find a . or # within the selector AND its not at the beginning
-	if ((foundPeriod != std::string::npos && foundPeriod!=0) || (foundHash != std::string::npos && foundHash!=0))
+	//return true when find a . or # within the selector AND its not at the beginning
+	if (input.length() > 0 && ((foundPeriod != std::string::npos && foundPeriod!=0) || (foundHash != std::string::npos && foundHash!=0)))
 	{
 		return true;
 	}
@@ -201,14 +186,10 @@ bool isConjunctionSelector(std::string input) //tells you if you have a conjunct
 		return false;
 }
 
+//Tells you if the line is an id selector
 bool isIDSelector (std::string input)
 {
-	if (input.length() == 0)
-	{
-		return false;
-	}
-
-	if (input[0] == '#')
+	if (input.length() > 0 && input[0] == '#')
 	{
 		return true;
 	}
@@ -216,17 +197,13 @@ bool isIDSelector (std::string input)
 		return false;
 }
 
-bool shouldAddToSet(std::string input) //tells you if you should add an item to the set
+//tells you if you should add an item to the set containing one of the options that can be written in shorthand
+bool shouldAddToSet(std::string input) 
 {
-	if (input.length() == 0)
-	{
-		return false;
-	}
-
-	if (input.find("background") != std::string::npos || input.find("border")!= std::string::npos
+	if (input.length() > 0 && (input.find("background") != std::string::npos || input.find("border")!= std::string::npos
 		|| input.find("margin")!= std::string::npos || input.find("overflow")!= std::string::npos
 		|| input.find("padding")!= std::string::npos || input.find("list-style")!= std::string::npos
-		|| input.find("animation")!= std::string::npos || input.find("transition")!= std::string::npos)
+		|| input.find("animation")!= std::string::npos || input.find("transition")!= std::string::npos))
 	{
 		return true;
 	}
@@ -234,7 +211,8 @@ bool shouldAddToSet(std::string input) //tells you if you should add an item to 
 		return false;
 }
 
-string shorthandToAdd (string input) //tells you which string to add to the set
+//tells you which string to add to the set based on what we find within the string
+string shorthandToAdd (string input)
 {
 	if (input.find("background") != std::string::npos)
 	{
@@ -272,8 +250,8 @@ string shorthandToAdd (string input) //tells you which string to add to the set
 		return "";
 }
 
-
-int howManyNum(std::string input) //will be used in isZeroandUnits
+//helper function used in isZeroandUnits that tells you how many numerical characters there are in a string
+int howManyNum(std::string input)
 {
 	int count = 0;
 	for (int i = 0; i < input.length(); i++)
@@ -286,9 +264,10 @@ int howManyNum(std::string input) //will be used in isZeroandUnits
 	return count;
 }
 
+//helper function used in isZeroandUnits that checks whether the string has 0 inside of it or not
 bool hasZero(std::string input) 
 {
-	if (input.find("0") != std::string::npos)
+	if (input.length() > 0 && input.find("0") != std::string::npos)
 	{
 		return true;
 	} 
@@ -298,6 +277,7 @@ bool hasZero(std::string input)
 	}
 }
 
+//helper function used in isZeroandUnits that tells you whether or not the string has an alpha character in it or not
 bool hasAlpha(std::string input)
 {
 	for (int i = 0; i < input.length(); i++)
@@ -310,9 +290,10 @@ bool hasAlpha(std::string input)
 	return false;
 }
 
-bool isZeroAndUnits(std::string propertyValue) //tells you if you have something like margin: 0em;
+//tells you if you have something like margin: 0em;
+bool isZeroAndUnits(std::string propertyValue)
 {
-	if (howManyNum(propertyValue) == 1 && hasZero(propertyValue) && hasAlpha(propertyValue))
+	if (propertyValue.length() > 0 && howManyNum(propertyValue) == 1 && hasZero(propertyValue) && hasAlpha(propertyValue))
 	{
 		return true;
 	} 
@@ -327,7 +308,7 @@ bool needsLeadingZero(std::string propertyValue)
 {
 	int periodPosition = propertyValue.find('.');
 
-	if (periodPosition != std::string::npos)
+	if (propertyValue.length() > 0 && periodPosition != std::string::npos)
 	{
 		if(isdigit(propertyValue[periodPosition-1])) //if we find 0-9, then it is valid to be put in front of a .
 		{
@@ -338,16 +319,16 @@ bool needsLeadingZero(std::string propertyValue)
 			return true;
 		}
 	} 
-	else //if dont find period then no point in even checking
+	else //if don't find period then no point in even checking
 	{
 		return false;
 	}
 }
 
-
-bool hasHexadecimal (std::string input)
+//tells you if there is a hexadecimal in the property value or not
+bool hasHexadecimal (std::string propertyValue)
 {
-	if (input.find('#') != std::string::npos)
+	if (propertyValue.length() > 0 && propertyValue.find('#') != std::string::npos)
 	{
 		return true;
 	}
@@ -363,13 +344,13 @@ bool canReplaceHexadecimal (std::string input)
 	int difference = semicolonPostion - hexPostion;
 	string hexString = input.substr(hexPostion+1, difference-1);
 	
-	if (hexString.length() == 3)
+	if (hexString.length() == 3) //can't replace #eee only #eeeeee
 	{
 		return false;
 	}
 	else //its not already of length 3, so we need to see if we can reduce it or not
 	{
-		if(hexString.length() == 6) //go through it in pairs, and it at any point the two next to each other arent the same, then  return false;
+		if(hexString.length() == 6) //go through it in pairs, and if at any point the two next to each other arent the same, then  return false;
 		{
 			for (int i = 0; i < hexString.length(); i+=2)
 			{
@@ -385,9 +366,10 @@ bool canReplaceHexadecimal (std::string input)
 	}
 }
 
+//tells you if you have incorrect delimiters in the name i.e. hello_bye
 bool incorrectSeparateDelimiters(std::string input)
 {
-	if (input.find('_') != std::string::npos)
+	if (input.length() > 0 && input.find('_') != std::string::npos)
 	{
 		return true;
 	}
@@ -395,9 +377,10 @@ bool incorrectSeparateDelimiters(std::string input)
 		return false;
 }
 
-bool missingSemicolon(std::string input) //all lines inside a selector should end in a semi colon
+//tells you if you are missing a semi colon or not || all lines inside a selector should end in a semi colon
+bool missingSemicolon(std::string input)
 {
-	if (input.find(';') != std::string::npos)
+	if (input.length() > 0 && input.find(';') != std::string::npos)
 	{
 		return false;
 	}
@@ -405,9 +388,10 @@ bool missingSemicolon(std::string input) //all lines inside a selector should en
 		return true;
 }
 
-bool isIDorClass (std::string input) //tells us if this is a class or id
+//tells us if this is a class or id line
+bool isIDorClass (std::string input)
 {
-	if (input[0] == '.' || input[0] == '#')
+	if (input.length() > 0 && (input[0] == '.' || input[0] == '#'))
 	{
 		return true;
 	}
@@ -415,10 +399,11 @@ bool isIDorClass (std::string input) //tells us if this is a class or id
 		return false;
 }
 
-bool incorrectPropertyNameStop (std::string input) //we are inside a selector so we are guaranteed a : exists and check to see if the format is anything other than a: b
+//we are inside a selector so we are guaranteed a : exists and check to see if the format is anything other than a: b
+bool incorrectPropertyNameStop (std::string input) 
 {
 	int colonPosition = input.find(':');
-	if (colonPosition != std::string::npos && (input[colonPosition-1] == ' ' || input[colonPosition+1] != ' '))
+	if (colonPosition != std::string::npos && (input[colonPosition-1] == ' ' || input[colonPosition+1] != ' ')) //there has to be no space before hand AND a space after in order to be proper format
 	{
 		return true;
 	}
@@ -466,6 +451,7 @@ bool hasSingleQuotes(std::string input)
 		return false;
 }
 
+//tells you if the string has double quotes inside of it
 bool hasDoubleQuotes(std::string input)
 {
 	int quotePosition = input.find('"');
@@ -477,7 +463,7 @@ bool hasDoubleQuotes(std::string input)
 		return false;
 }
 
-//tells you if the line above the selector is valid or not
+//tells you if the line above the selector is valid or not || the only acceptable format is something like h1,
 bool isValidLineAboveSelector(std::string input)
 {
 	int commaPosition = input.find(',');

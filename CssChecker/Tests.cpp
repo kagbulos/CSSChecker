@@ -7,9 +7,9 @@ using namespace std;
 
 void test()
 {
-	bool toRet;
+	/*bool toRet;
 	string toRet1;
-	int toRet2;
+	int toRet2;*/
 	
 	//toRet = hasSelector("*:before: {"); //expect 1
 	//cout << toRet << "\n";

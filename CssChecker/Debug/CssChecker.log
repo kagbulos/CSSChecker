@@ -1,13 +1,8 @@
 ﻿  CssChecker.cpp
   Checker Functions.cpp
 c:\users\kendall\documents\visual studio 2010\projects\csschecker\csschecker\checker functions.cpp(11): warning C4018: '<' : signed/unsigned mismatch
-c:\users\kendall\documents\visual studio 2010\projects\csschecker\csschecker\checker functions.cpp(279): warning C4018: '<' : signed/unsigned mismatch
-c:\users\kendall\documents\visual studio 2010\projects\csschecker\csschecker\checker functions.cpp(303): warning C4018: '<' : signed/unsigned mismatch
-c:\users\kendall\documents\visual studio 2010\projects\csschecker\csschecker\checker functions.cpp(374): warning C4018: '<' : signed/unsigned mismatch
-  Generating Code...
-  Compiling...
-  Tests.cpp
-c:\users\kendall\documents\visual studio 2010\projects\csschecker\csschecker\tests.cpp(12): warning C4101: 'toRet2' : unreferenced local variable
-c:\users\kendall\documents\visual studio 2010\projects\csschecker\csschecker\tests.cpp(10): warning C4101: 'toRet' : unreferenced local variable
+c:\users\kendall\documents\visual studio 2010\projects\csschecker\csschecker\checker functions.cpp(257): warning C4018: '<' : signed/unsigned mismatch
+c:\users\kendall\documents\visual studio 2010\projects\csschecker\csschecker\checker functions.cpp(283): warning C4018: '<' : signed/unsigned mismatch
+c:\users\kendall\documents\visual studio 2010\projects\csschecker\csschecker\checker functions.cpp(355): warning C4018: '<' : signed/unsigned mismatch
   Generating Code...
   CssChecker.vcxproj -> c:\users\kendall\documents\visual studio 2010\Projects\CssChecker\Debug\CssChecker.exe
