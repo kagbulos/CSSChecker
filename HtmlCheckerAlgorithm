@@ -1,0 +1,94 @@
+open the file and make sure it can open
+string line = store each line
+string proprty = holds the property
+string propertyValue = value of the property
+int lineNumber = 1;
+bool foundIndentation = false;
+int numSpaces = 0;
+
+while !endOfFile
+	grab each line and store it in the line variable
+
+	if(nextLineShouldBeEmpty && LineNotEmpty(line))
+		print error = expected line to be empty
+
+	if(endsInWhiteSpace)
+		print error (there should be no extra white spaces in this line)
+
+	if(startsWithWhiteSpace)
+		print error (there should be no white space at the start)
+
+	if(foundIndentation && (numspaces != howmanyspaces(line) || 0 == howmanyspaces(line)))
+		print error(inconsistent spacing needs to be fixed)
+
+	if(hasSelector(line)) //checks to see if it is a line like html {
+	{
+		if(insideASelector) //if you are already inside a selector and you ran into another one
+		{
+			print error (missing a close } somewhere in program)
+		}
+
+		insideASelector = true;
+
+		if(!hasProperSelectorFormat(line)) //also checks that it has no uppercase!
+			print error
+	}
+	else if(hasClosingSelector(line))
+	{
+		if(!insideASelector)
+			print error (found a closing } but it doesnt have an opening {)
+
+		insideASelector = false;
+		nextLineshouldBeEmpty = true;
+	}
+	else //you are inside a selector
+	{
+		if(!foundIndentation) //you have yet to go inside a selector block
+			foundIndentation = true
+			numspaces = howManySpacesBeforeFirstChar(line)
+
+
+		if (insideASelector)
+		{
+			property = getPropertyFromLine(line)
+			propertyValue = getPropertyValueFromLine(line)
+
+			if(hasUpperCase (line))
+				print error(according to the udacity guide, there should be no capitalization in the property or property values)
+
+		}
+	}
+	lineNumber++;
+
+
+hasSelector() //checks to see if it is a line like html {
+
+hasProperSelectorFormat() //checks to see if it doesnt have spaces at the beginning, has a space between word and { and no extra spaces at the end
+
+howManySpacesBeforeFirstChar() //tells you how many spaces before the first char, should either be 0 because there are none for should be same amount every time once inside a block
+
+
+//shorthand for css properties
+background
+border
+margin
+overflow
+padding
+list style
+animation
+transition
+
+//what can be in front of .
+0.1
+ .1
+a.1 ?
+
+left off on Selector and Declaration Separation
+
+
+ADC: Graves, Caitlyn, Lucian, Jinx, Tristana
+TOP: Ryze, Pantheon, Malphite, Vladimir, Irelia, Tryndamere, Lissandra, Mundo ("only against double AP"), Master Yi
+SUP: Janna, Karma, Annie, Morgana, Soraka, Braum, Leona
+Mid: Orianna, Ryze, Talon, Mordekaiser, Veigar(?), Lulu, Kayle, Pantheon I guess
+Jungle: Yi, Kayle, Warwick, Pantheon, Vi, Evelynn, Amumu, Malphite, Maokai I guess o_o
+

@@ -20,8 +20,10 @@ int _tmain(int argc, _TCHAR* argv[])
 		bool foundIndentation = false; //will tell us once we find the expected indentation
 		bool insideASelector = false; //tells you if you are inside a selector or not
 		bool nextLineShouldBeEmpty = false; //tells us if the next line should be empty or not
+		bool insideABlockComment = false; //tells you if you are in a block comment or not
 		int expectedNumSpaces = 0; //tells the number of spaces we expect
 		int lineNumber = 1; //tells the line number so we can print the line of the error
+		int lastBlockOpen = 0; //temp value that holds the line number for the last block comment open
 		set<string> setOfShorthand; //contains a list of the shorthand properties we have seen so far inside a selector
 		string property; //will hold the property we are looking at
 		string propertyValue; //will hold the value of the property we are looking at
@@ -170,14 +172,51 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 			else //section that handles lines above the selector { i.e. h1,h2,h3 should be spanning multiple lines
 			{
-				 if (!isValidLineAboveSelector(line)) //valid lines above the selector are of the form h1,
-				 {
-					 cout << "Not a valid line above a selector on line " << lineNumber << "\n";
-				 }
+				// [//] [/*] [*/] [ *] [string] are all valid ways to be related to a comment
+				if (isCommentRelated(line) || insideABlockComment)
+				{
+					if (startsEmptySpace(line)) //comment lines should never start with a space
+					{
+						cout << "Comment related line shouldn't start with a space found on line " << lineNumber << "\n";
+					}
+
+					if (foundOpenBlockComment(line)) //marking that you are inside a block comment
+					{
+						insideABlockComment = true;
+						lastBlockOpen = lineNumber;
+					}
+
+					if (foundCloseBlockComment(line)) //marking that you are ending a block comment
+					{
+						if (!insideABlockComment)
+						{
+							cout << "found a closing block comment before an open block comment on line " << lineNumber << "\n";
+						}
+
+						if (!hasCorrectCloseBlockFormat(line))
+						{
+							cout << "There shouldn't be anything more on the line with a */ on line " << lineNumber << "\n";
+						}
+						insideABlockComment = false;
+					}
+				}
+				else
+				{
+					if (!isValidLineAboveSelector(line)) //valid lines above the selector are of the form h1, 
+					{
+						cout << "Not a valid line above a selector on line " << lineNumber << "\n";
+					}
+				}
 			}
 
 			lineNumber++; //after end each line, increase line number
 		}
+
+		if (insideABlockComment) //if you are still inside a comment by the end, you are midding a closing comment block
+		{
+			cout << "There was a block comment on line " << lastBlockOpen << " that was never closed\n";
+		}
+
 		CssFile.close(); //close the file after we open it
 	}
 	else

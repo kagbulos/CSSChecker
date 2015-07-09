@@ -463,14 +463,65 @@ bool hasDoubleQuotes(std::string input)
 		return false;
 }
 
-//tells you if the line above the selector is valid or not || the only acceptable format is something like h1,
+//tells you if the line above the selector is valid or not 
+//the only acceptable format is something like h1, || //comment here
 bool isValidLineAboveSelector(std::string input)
 {
 	int commaPosition = input.find(',');
-	if (commaPosition != std::string::npos && input[input.length()-1] == ',')
+	int otherCommaPosition = input.find_last_of(',');
+	if (commaPosition != std::string::npos && input[input.length()-1] == ',' && commaPosition == otherCommaPosition)
 	{
 		return true;
 	}
 	else
 		return false;
+}
+
+//tells you if the line is related to a comment or not
+bool isCommentRelated(std::string input)
+{
+	int openBlockPosition = input.find("/*");
+	int closeBlockPosition = input.find("*/");
+	int commentPosition = input.find("//");
+	if ((openBlockPosition != std::string::npos) || (closeBlockPosition != std::string::npos) || (commentPosition != std::string::npos))
+	{
+		return true;
+	}
+	else
+		return false;
+}
+
+//tells you when you find open block comment
+bool foundOpenBlockComment(std::string input)
+{
+	int openBlockPosition = input.find("/*");
+	if (openBlockPosition != std::string::npos)
+	{
+		return true;
+	}
+	else
+		return false;
+}
+
+//tells you when you find close block comment
+bool foundCloseBlockComment(std::string input)
+{
+	int openBlockPosition = input.find("*/");
+	if (openBlockPosition != std::string::npos)
+	{
+		return true;
+	}
+	else
+		return false;
+}
+
+//tells you if the line with */ has the correct format
+bool hasCorrectCloseBlockFormat(std::string input)
+{
+	if (input.length() > 2)
+	{
+		return false;
+	}
+	else
+		return true;
 }
