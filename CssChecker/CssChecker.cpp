@@ -105,7 +105,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				property = getProperty(line);
 				propertyValue = getPropertyValue(line);
 
-				if (missingSemicolon(line) && !isIDorClass(line)) //have to add !isIDorClass(line) in case where formatting is off and .audio-block and { are on separate lines
+				if (missingSemicolon(line) && !isIDorClass(line) && !isCommentRelated(line)) //have to add !isIDorClass(line) in case where formatting is off and .audio-block and { are on separate lines
 				{
 					cout << "Missing a semicolon on line " << lineNumber << "\n"; 
 				}
@@ -172,7 +172,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 			else //section that handles lines above the selector { i.e. h1,h2,h3 should be spanning multiple lines
 			{
-				// [//] [/*] [*/] [ *] [string] are all valid ways to be related to a comment
+				// [/*] [*/] [ *] [string] are all valid ways to be related to a comment
 				if (isCommentRelated(line) || insideABlockComment)
 				{
 					if (startsEmptySpace(line)) //comment lines should never start with a space
@@ -193,7 +193,7 @@ int _tmain(int argc, _TCHAR* argv[])
 							cout << "found a closing block comment before an open block comment on line " << lineNumber << "\n";
 						}
 
-						if (!hasCorrectCloseBlockFormat(line))
+						if (!hasCorrectCloseBlockFormat(line) && !foundOpenBlockComment(line)) //if you dont find a /* on same line as */ then then line should be empty
 						{
 							cout << "There shouldn't be anything more on the line with a */ on line " << lineNumber << "\n";
 						}

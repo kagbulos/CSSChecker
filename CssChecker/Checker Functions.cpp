@@ -482,8 +482,7 @@ bool isCommentRelated(std::string input)
 {
 	int openBlockPosition = input.find("/*");
 	int closeBlockPosition = input.find("*/");
-	int commentPosition = input.find("//");
-	if ((openBlockPosition != std::string::npos) || (closeBlockPosition != std::string::npos) || (commentPosition != std::string::npos))
+	if ((openBlockPosition != std::string::npos) || (closeBlockPosition != std::string::npos))
 	{
 		return true;
 	}
